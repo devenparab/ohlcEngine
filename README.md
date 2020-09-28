@@ -34,7 +34,9 @@ This will do following things:
 * An app with name from manifest will be created on CF
 * Service called "ohlcEngine"
 
+## System Design
 
+![alt text](https://github.com/devenparab/ohlcEngine/blob/master/blob/SystemDesign.PNG)
 
 ## Copyright
 
