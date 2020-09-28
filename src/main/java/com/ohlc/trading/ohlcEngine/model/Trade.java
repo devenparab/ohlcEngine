@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public class Trades implements Serializable {
+public class Trade implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public String sym;
@@ -78,7 +78,7 @@ public class Trades implements Serializable {
 
     @Override
     public String toString() {
-        return "Trades{" +
+        return "Trade{" +
                 "sym='" + sym + '\'' +
                 ", t='" + t + '\'' +
                 ", p=" + p +

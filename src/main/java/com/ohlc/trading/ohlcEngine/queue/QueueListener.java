@@ -2,7 +2,7 @@ package com.ohlc.trading.ohlcEngine.queue;
 
 import com.ohlc.trading.ohlcEngine.common.CommonConstants;
 import com.ohlc.trading.ohlcEngine.exception.TradeInfoException;
-import com.ohlc.trading.ohlcEngine.model.Trades;
+import com.ohlc.trading.ohlcEngine.model.Trade;
 import com.ohlc.trading.ohlcEngine.process.finiteStateMachine.WorkerFiniteStateMachine;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -23,15 +23,15 @@ public class QueueListener {
     WorkerFiniteStateMachine workerFiniteStateMachine;
 
     @JmsListener(destination = CommonConstants.FSM_Q, containerFactory = "queueListenerFactory")
-    public void receiveTradeData(@Payload Trades trades, @Headers Map<String, Object> headers){
+    public void receiveTradeData(@Payload Trade trade, @Headers Map<String, Object> headers){
         //LOGGER.info("### QueueListener.java >> receiveTradeData() >> jms-message-type [{}] ###",headers.get("jms-message-type"));
-        LOGGER.info("received <" + trades + ">");
-        if (StringUtils.isEmpty(trades.getSym())){
+        LOGGER.info("received <" + trade + ">");
+        if (StringUtils.isEmpty(trade.getSym())){
             LOGGER.error("### receiveTradeData() trade name cannot be Empty ###");
             throw new TradeInfoException("Trade Info Corrupt");
         }else{
             LOGGER.info("### receiveTradeData() trade name cannot be Empty ###");
-            workerFiniteStateMachine.computeFiniteStateMachine(trades);
+            workerFiniteStateMachine.computeFiniteStateMachine(trade);
         }
     }
 }

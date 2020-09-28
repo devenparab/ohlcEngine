@@ -1,15 +1,13 @@
 package com.ohlc.trading.ohlcEngine.process.reader.impl;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ohlc.trading.ohlcEngine.common.CommonConstants;
-import com.ohlc.trading.ohlcEngine.model.Trades;
+import com.ohlc.trading.ohlcEngine.model.Trade;
 import com.ohlc.trading.ohlcEngine.process.reader.WorkerReader;
 import com.ohlc.trading.ohlcEngine.queue.QueueMessagingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -42,10 +40,9 @@ public class WorkerReaderImpl implements WorkerReader {
             while(reader.ready()) {
                 String singleTradeJson = reader.readLine();
                 LOGGER.info("### Line ### "+singleTradeJson);
-                Trades trade = mapper.readValue(singleTradeJson, Trades.class);
+                Trade trade = mapper.readValue(singleTradeJson, Trade.class);
                 LOGGER.info("### Pojo ### "+trade.toString());
                 queueMessagingService.sendObMessage(trade, CommonConstants.TRADE_DATA);
-                break;
             }
         } catch (IOException e) {
             LOGGER.error("### Exception of type [{}] occurred in [{}] >> startReadingTrade() ###",e.getClass().getCanonicalName(), this.getClass(),e);
