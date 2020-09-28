@@ -45,6 +45,7 @@ public class WorkerReaderImpl implements WorkerReader {
                 Trades trade = mapper.readValue(singleTradeJson, Trades.class);
                 LOGGER.info("### Pojo ### "+trade.toString());
                 queueMessagingService.sendObMessage(trade, CommonConstants.TRADE_DATA);
+                break;
             }
         } catch (IOException e) {
             LOGGER.error("### Exception of type [{}] occurred in [{}] >> startReadingTrade() ###",e.getClass().getCanonicalName(), this.getClass(),e);

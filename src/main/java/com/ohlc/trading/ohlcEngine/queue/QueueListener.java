@@ -22,9 +22,10 @@ public class QueueListener {
     @Autowired
     WorkerFiniteStateMachine workerFiniteStateMachine;
 
-    @JmsListener(destination = "FSM_Q", containerFactory = "queueContainerFactory", selector = "jms-message-type='"+CommonConstants.TRADE_DATA+"'")
+    @JmsListener(destination = CommonConstants.FSM_Q, containerFactory = "queueListenerFactory")
     public void receiveTradeData(@Payload Trades trades, @Headers Map<String, Object> headers){
-        LOGGER.info("### QueueListener.java >> receiveTradeData() >> jms-message-type [{}] ###",headers.get("jms-message-type"));
+        //LOGGER.info("### QueueListener.java >> receiveTradeData() >> jms-message-type [{}] ###",headers.get("jms-message-type"));
+        LOGGER.info("received <" + trades + ">");
         if (StringUtils.isEmpty(trades.getSym())){
             LOGGER.error("### receiveTradeData() trade name cannot be Empty ###");
             throw new TradeInfoException("Trade Info Corrupt");

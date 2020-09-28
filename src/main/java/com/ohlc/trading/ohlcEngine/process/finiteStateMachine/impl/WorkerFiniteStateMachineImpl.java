@@ -13,5 +13,6 @@ public class WorkerFiniteStateMachineImpl implements WorkerFiniteStateMachine {
     @Override
     public void computeFiniteStateMachine(Trades trades) {
         LOGGER.info("### WorkerFiniteStateMachineImpl.java >> computeFiniteStateMachine() >> Trades[{}] ###",trades.toString());
+        //to-do implement logic for FSM here
     }
 }

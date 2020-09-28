@@ -22,10 +22,7 @@ public class QueueMessagingService {
             case CommonConstants.TRADE_DATA:
                 LOGGER.info("### posting TRADE Pojo ###");
                 Trades trades = (Trades) obj;
-                jmsTemplate.convertAndSend("FSM_Q", trades, message -> {
-                    message.setStringProperty("jms-message-type", messageType);
-                    return  message;
-                });
+                jmsTemplate.convertAndSend(CommonConstants.FSM_Q, trades);
                 break;
 
             case CommonConstants.CHART_DATA:
