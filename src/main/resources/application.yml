@@ -1,0 +1,27 @@
+readTrade:
+  fixed:
+    delay: 5
+  initial:
+    delay: 8
+
+finiteStateMachine:
+  fixed:
+    delay: 5
+  initial:
+    delay: 8
+
+emitter:
+  fixed:
+    delay: 5
+  initial:
+    delay: 8
+
+pool:
+  size:
+    core: 20
+    max: 40
+
+queue:
+  size:
+    max: 50
+
