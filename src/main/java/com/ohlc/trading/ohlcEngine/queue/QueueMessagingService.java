@@ -1,7 +1,8 @@
 package com.ohlc.trading.ohlcEngine.queue;
 
-import com.ohlc.trading.ohlcEngine.common.CommonConstants;
-import com.ohlc.trading.ohlcEngine.model.Trade;
+import com.ohlc.trading.ohlcEngine.model.BarChartDataWrapper;
+import com.ohlc.trading.ohlcEngine.model.TradesInfo;
+import com.ohlc.trading.ohlcEngine.queue.types.QueueName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,23 +16,23 @@ public class QueueMessagingService {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    public void sendObMessage(Object obj, String messageType){
-        LOGGER.info("### Posted <{}> ###",obj);
-        switch (messageType){
-            case CommonConstants.TRADE_DATA:
-                LOGGER.info("### posting TRADE Pojo ###");
-                Trade trade = (Trade) obj;
-                jmsTemplate.convertAndSend(CommonConstants.FSM_Q, trade);
+    public void sendObjMessage(String queueName, Object obj){
+        //LOGGER.info("### Posted <{}> ###",obj);
+        switch (queueName){
+            case QueueName.FSM_Q:
+                //LOGGER.info("### posting SLICED_TRADE_DATA Pojo ###");
+                TradesInfo tradesInfo = (TradesInfo) obj;
+                jmsTemplate.convertAndSend(queueName, tradesInfo);
                 break;
 
-            case CommonConstants.CHART_DATA:
-                LOGGER.info("### posting CHART Pojo ###");
-                Trade tradesX = (Trade) obj;
-                jmsTemplate.convertAndSend("WATCHER_Q", tradesX, message -> {
-                    message.setStringProperty("jms-message-type", messageType);
-                    return  message;
-                });
+            case QueueName.CHART_Q:
+                //LOGGER.info("### posting CHART Pojo ###");
+                BarChartDataWrapper barChartDataWrapper = (BarChartDataWrapper) obj;
+                jmsTemplate.convertAndSend(queueName, barChartDataWrapper);
                 break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + queueName);
         }
     }
 

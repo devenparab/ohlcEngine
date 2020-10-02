@@ -1,3 +1,4 @@
+/*
 package com.ohlc.trading.ohlcEngine.scheduler.config;
 
 import org.slf4j.Logger;
@@ -40,3 +41,4 @@ public class SchedulerDelegator {
     }
 
 }
+*/

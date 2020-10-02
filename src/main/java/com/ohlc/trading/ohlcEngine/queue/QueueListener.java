@@ -1,13 +1,17 @@
 package com.ohlc.trading.ohlcEngine.queue;
 
 import com.ohlc.trading.ohlcEngine.common.CommonConstants;
+import com.ohlc.trading.ohlcEngine.exception.BarChartDataException;
 import com.ohlc.trading.ohlcEngine.exception.TradeInfoException;
-import com.ohlc.trading.ohlcEngine.model.Trade;
+import com.ohlc.trading.ohlcEngine.model.BarChartDataWrapper;
+import com.ohlc.trading.ohlcEngine.model.TradesInfo;
+import com.ohlc.trading.ohlcEngine.process.chartingMachine.WorkerChartingMachine;
 import com.ohlc.trading.ohlcEngine.process.finiteStateMachine.WorkerFiniteStateMachine;
-import org.apache.commons.lang3.StringUtils;
+import com.ohlc.trading.ohlcEngine.queue.types.QueueName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -22,16 +26,28 @@ public class QueueListener {
     @Autowired
     WorkerFiniteStateMachine workerFiniteStateMachine;
 
-    @JmsListener(destination = CommonConstants.FSM_Q, containerFactory = "queueListenerFactory")
-    public void receiveTradeData(@Payload Trade trade, @Headers Map<String, Object> headers){
-        //LOGGER.info("### QueueListener.java >> receiveTradeData() >> jms-message-type [{}] ###",headers.get("jms-message-type"));
-        LOGGER.info("received <" + trade + ">");
-        if (StringUtils.isEmpty(trade.getSym())){
-            LOGGER.error("### receiveTradeData() trade name cannot be Empty ###");
+    @Autowired
+    WorkerChartingMachine workerChartingMachine;
+
+    @JmsListener(destination = QueueName.FSM_Q, containerFactory = "queueListenerFactory")
+    public void receiveTradeData(@Payload TradesInfo tradesInfo, @Headers Map<String, Object> headers){
+        LOGGER.info("received <" + tradesInfo + ">");
+        if (tradesInfo.getTrades().size() < 0){
+            LOGGER.error("### receiveTradeData() trades are Empty ###");
             throw new TradeInfoException("Trade Info Corrupt");
         }else{
-            LOGGER.info("### receiveTradeData() trade name cannot be Empty ###");
-            workerFiniteStateMachine.computeFiniteStateMachine(trade);
+            workerFiniteStateMachine.computeFiniteStateMachine(tradesInfo);
+        }
+    }
+
+    @JmsListener(destination = QueueName.CHART_Q, containerFactory = "queueListenerFactory")
+    public void receiveBarChartData(@Payload BarChartDataWrapper barChartDataWrapper, @Headers Map<String, Object> headers){
+        LOGGER.info("received <" + barChartDataWrapper + ">");
+        if (barChartDataWrapper.getBarChartDataList().size() < 0){
+            LOGGER.error("### receiveBarChartData() bar chart data are Empty ###");
+            //throw new BarChartDataException("Trade Info Corrupt");
+        }else{
+            workerChartingMachine.updateBarChart(barChartDataWrapper);
         }
     }
 }

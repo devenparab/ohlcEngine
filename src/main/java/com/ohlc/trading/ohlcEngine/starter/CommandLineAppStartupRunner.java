@@ -1,3 +1,4 @@
+/*
 package com.ohlc.trading.ohlcEngine.starter;
 
 import com.ohlc.trading.ohlcEngine.process.reader.WorkerReader;
@@ -13,6 +14,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        workerReader.startReadingTrade();
+        workerReader.startReadingTrade(symbol, intervalSecs);
     }
 }
+*/

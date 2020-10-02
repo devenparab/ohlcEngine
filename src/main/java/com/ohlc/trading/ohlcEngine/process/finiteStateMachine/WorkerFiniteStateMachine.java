@@ -1,7 +1,7 @@
 package com.ohlc.trading.ohlcEngine.process.finiteStateMachine;
 
-import com.ohlc.trading.ohlcEngine.model.Trade;
+import com.ohlc.trading.ohlcEngine.model.TradesInfo;
 
 public interface WorkerFiniteStateMachine {
-    void computeFiniteStateMachine(Trade trade);
+    void computeFiniteStateMachine(TradesInfo tradesInfo);
 }
