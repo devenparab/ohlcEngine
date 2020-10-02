@@ -8,22 +8,23 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Trade implements Serializable/*, Comparator<Trade>*/ {
     private static final long serialVersionUID = -5073382210998337264L;
 
-    public String sym;
+    private String sym;
     @JsonProperty("T")
-    public String t;
+    private String t;
     @JsonProperty("P")
-    public double p;
+    private double p;
     @JsonProperty("Q")
-    public double q;
+    private double q;
     @JsonProperty("TS")
-    public double tS;
-    public String side;
+    private double tS;
+    private String side;
     @JsonProperty("TS2")
-    public long tS2;
+    private Long tS2;
     private String tS2_formattedTime;
     private LocalDateTime tS2LocalDateTime;
 
@@ -83,11 +84,11 @@ public class Trade implements Serializable/*, Comparator<Trade>*/ {
         this.side = side;
     }
 
-    public long gettS2() {
+    public Long gettS2() {
         return tS2;
     }
 
-    public void settS2(long tS2) {
+    public void settS2(Long tS2) {
         this.tS2 = tS2;
         formatTS(this.tS2);
     }
@@ -101,9 +102,9 @@ public class Trade implements Serializable/*, Comparator<Trade>*/ {
     }
 
 
-    private void formatTS(long unix_seconds) {
-        long seconds = unix_seconds / 1_000_000_000;
-        long nanos = unix_seconds % 1_000_000_000;
+    private void formatTS(Long unix_seconds) {
+        Long seconds = unix_seconds / 1_000_000_000;
+        Long nanos = unix_seconds % 1_000_000_000;
         Instant instant = Instant.ofEpochSecond(seconds, nanos);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(CommonConstants.dateFormat);
         LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.of(CommonConstants.IST));
@@ -126,7 +127,21 @@ public class Trade implements Serializable/*, Comparator<Trade>*/ {
                 '}';
     }
 
-   /*@Override
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trade trade = (Trade) o;
+        return sym.equals(trade.sym) &&
+                tS2.equals(trade.tS2);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sym, tS2);
+    }
+
+    /*@Override
     public int compare(Trade o1, Trade o2) {
         try {
             return new SimpleDateFormat("HH:mm:ss").parse(o1.gettS2_formattedTime())

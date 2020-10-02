@@ -57,7 +57,7 @@ public class CommonConfiguration {
 
     @Bean(name = "workerChartingMachineExecutor")
     public Executor workerChartingMachineExecutor(){
-        LOGGER.info("### workerFiniteStateMachineExecutor() ###");
+        LOGGER.info("### workerChartingMachineExecutor() ###");
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         threadPoolTaskExecutor.setCorePoolSize(corePoolSize);
         threadPoolTaskExecutor.setMaxPoolSize(maxPoolSize);

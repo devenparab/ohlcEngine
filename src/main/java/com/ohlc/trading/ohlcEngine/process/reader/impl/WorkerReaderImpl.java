@@ -40,8 +40,8 @@ public class WorkerReaderImpl implements WorkerReader {
     public void startReadingTrade(String symbol, int intervalSecs) {
         LOGGER.info("## Starting WorkerReaderImpl.java >> startReadingTrade() ##");
         InputStream inputStream;
-        //Resource resource = resourceLoader.getResource("classpath:tradeData/trades.json");
-        Resource resource = resourceLoader.getResource("classpath:tradeData/tradesSmall.json");
+        Resource resource = resourceLoader.getResource("classpath:tradeData/trades.json");
+        //Resource resource = resourceLoader.getResource("classpath:tradeData/tradesSmall.json");
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {

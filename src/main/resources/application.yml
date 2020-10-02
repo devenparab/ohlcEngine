@@ -1,7 +1,7 @@
 spring:
   # Embedded ActiveMQ Configuration Example
   activemq:
-    broker-url: vm://embedded?broker.persistent=false,useShutdownHook=false
+    broker-url: vm://localhost?broker.persistent=false&broker.useShutdownHook=false
     in-memory: true
     non-blocking-redelivery: true
     packages:
@@ -24,8 +24,8 @@ spring:
     listener:
       acknowledge-mode: auto
       auto-startup: true
-      concurrency: 5
-      max-concurrency: 10
+      concurrency: 100
+      max-concurrency: 200
     pub-sub-domain: false
     template:
       default-destination:
@@ -57,10 +57,10 @@ emitter:
 
 pool:
   size:
-    core: 20
-    max: 40
+    core: 100
+    max: 200
 
 queue:
   size:
-    max: 50
+    max: 100
 
