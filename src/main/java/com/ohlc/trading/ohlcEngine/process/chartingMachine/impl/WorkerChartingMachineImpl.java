@@ -25,8 +25,6 @@ public class WorkerChartingMachineImpl implements WorkerChartingMachine {
     public void updateBarChart(BarChartDataWrapper barChartDataWrapper) {
         LOGGER.info("### Started WorkerChartingMachineImpl.java >> updateBarChart() >> Time [{}] :: ThreadId [{}] :: ThreadName [{}] ###",
                 CommonConstants.sdf.format(new Date()),Thread.currentThread().getId(), Thread.currentThread().getName());
-        //LOGGER.info("### Started WorkerChartingMachineImpl.java >> updateBarChart() >> barChartDataWrapper [{}] ###",barChartDataWrapper);
-        //LOGGER.info("### Bar Chart :: [{}]  ###", barChartDataWrapper.getBarChartDataList().stream().map(BarChartData::toString).collect(Collectors.joining(" ### ")) );
         if (!barChartDataWrapper.getBarChartDataList().isEmpty()){
             try {
                 JSONObject jsonObject = new JSONObject(mapper.writeValueAsString(barChartDataWrapper));

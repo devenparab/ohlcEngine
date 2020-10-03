@@ -25,9 +25,6 @@ public class WorkerReaderImpl implements WorkerReader {
     @Autowired
     ResourceLoader resourceLoader;
 
-    /*@Autowired
-    QueueMessagingService queueMessagingService;*/
-
     @Autowired
     TradesSegregator dataSegegator;
 
@@ -45,16 +42,13 @@ public class WorkerReaderImpl implements WorkerReader {
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {
-            inputStream = resource.getInputStream();//getClass().getClassLoader().getResourceAsStream("src/main/resources/tradeData/trades.json");
+            inputStream = resource.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             while(reader.ready()) {
                 String singleTradeJsonObj = reader.readLine();
-                //LOGGER.info("### Line ### "+singleTradeJsonObj);
                 Trade trade = mapper.readValue(singleTradeJsonObj, Trade.class);
                 if (trade.getSym().equals(symbol)) {
-                    //LOGGER.info("### Pojo ### "+trade.toString());
                     dataSegegator.sliceTradesBasedOnInterval(trade, intervalSecs);
-                    //queueMessagingService.sendObjMessage(trade, CommonConstants.TRADE_DATA);
                 }
             }
             //Collections.sort(subscribedList, Comparator.comparing(Trade::gettS2));

@@ -34,12 +34,10 @@ public class TradesSegregatorImpl implements TradesSegregator {
             setStateInfo(trade, intervalSecs, segregatorState);
         }else{
             SegregatorState segregatorState = CommonConstants.SEGREGATOR_INFO_MAP.get(CommonConstants.CURRENT_ACTIVE_SLOT);
-            //LOGGER.info("### segregatorState [{}] ###",segregatorState);
             if (segregatorState.getState().equals(State.ACTIVE)){
                 if (trade.gettS2LocalDateTime().isBefore(segregatorState.getEndInterval())){
                     tradesInfo.getTrades().add(trade);
                 }else {
-                    //send this slot to FSM Queue and proceed ahead
                     queueMessagingService.sendObjMessage(QueueName.FSM_Q, tradesInfo);
                     segregatorState = reInitialize();
                     setStateInfo(trade, intervalSecs, segregatorState);
@@ -59,8 +57,8 @@ public class TradesSegregatorImpl implements TradesSegregator {
     private void setStateInfo(Trade trade, long intervalSecs, SegregatorState segregatorState) {
         segregatorState.setBarCounter(counter.addAndGet(1));
         segregatorState.setState(State.ACTIVE);
-        segregatorState.setStartInterval(trade.gettS2LocalDateTime()/*LocalDateTime.parse(trade.gettS2_formattedTime())*/);
-        segregatorState.setEndInterval(trade.gettS2LocalDateTime().plusSeconds(intervalSecs)/*LocalDateTime.parse(trade.gettS2_formattedTime()).plusSeconds(intervalSecs)*/);
+        segregatorState.setStartInterval(trade.gettS2LocalDateTime());
+        segregatorState.setEndInterval(trade.gettS2LocalDateTime().plusSeconds(intervalSecs));
         segregatorState.setInterval(intervalSecs);
         CommonConstants.SEGREGATOR_INFO_MAP.put(CommonConstants.CURRENT_ACTIVE_SLOT, segregatorState);
         tradesInfo.setBarCounter(segregatorState.getBarCounter());

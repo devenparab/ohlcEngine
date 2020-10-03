@@ -1,7 +1,5 @@
 package com.ohlc.trading.ohlcEngine.process.finiteStateMachine.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ohlc.trading.ohlcEngine.common.CommonConstants;
 import com.ohlc.trading.ohlcEngine.model.*;
 import com.ohlc.trading.ohlcEngine.process.finiteStateMachine.WorkerFiniteStateMachine;
@@ -14,7 +12,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +27,6 @@ public class WorkerFiniteStateMachineImpl implements WorkerFiniteStateMachine {
     public void computeFiniteStateMachine(TradesInfo tradesInfo) {
         LOGGER.info("### Started WorkerFiniteStateMachineImpl.java >> computeFiniteStateMachine() >> The time is now [{}] :: ThreadId [{}] :: ThreadName [{}] ###",
                 CommonConstants.sdf.format(new Date()),Thread.currentThread().getId(), Thread.currentThread().getName());
-          /* LOGGER.info("### Bar Counter :: [{}] and Trades [{}] ###",
-                    tradesInfo.getBarCounter(), tradesInfo.getTrades().stream().map(Trade::toString).collect(Collectors.joining(" ### ")) );*/
         BarChartDataWrapper barChartDataWrapper = new BarChartDataWrapper();
         List<Trade> trades = tradesInfo.getTrades();
         LOGGER.info("### Bar Counter :: [{}] and Trades [{}] ###",
