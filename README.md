@@ -1,7 +1,7 @@
 # ohlcEngine
 
 [![Build Status][build-status-shield]][build-status-url]
-[![Code Coverage][code-coverage-shield]][code-coverage-shield]
+[![Code Coverage][code-coverage-shield]][code-coverage-url]
 [![Service Tests][service-tests-shield]][service-tests-url]
 [![Invoker Test][invoker-test-shield]][invoker-test-url]
 [![MIT License][license-shield]][license-url]
